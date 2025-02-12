@@ -1,35 +1,10 @@
-from app import mongo 
+from app import mongo
+from app.models.super_class import SuperClass
 
-class Users:
-    collection = mongo.db.users
+class User(SuperClass):
+ def init(self):
+     super().init("users")
 
-    @staticmethod
-    def find_all():
-        Users = Users.collection.find()
-        return list(Users)
-    
+def find_all(self):
+   raise NotImplementedError("No es necesario obtener todos los usuarios")
 
-    @staticmethod
-    def find_by_id():
-        User = Users.collection.find_one({
-            "_id": User_id
-        })
-        return User 
-    
-    @staticmethod
-    def create():
-        User = Users.collection.insert_one(data)
-        return User.inserted_id
-    
-    @staticmethod
-    def update(User_id, data):
-        User = Users.collectio.update_one({
-            "id":User_id
-        },{
-            "$set": data
-        })
-        return User
-    
-    @staticmethod
-    def delete (User_id):
-        return Users.collection.delete_one({"_id": User_id})
