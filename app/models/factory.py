@@ -1,15 +1,15 @@
 from app.models.pokemon import Pokemon
-from app.models.pokemon_favorites import Pokemon_Saved
-from app.models.users import Users
+from app.models.pokemon_favorites import PokemonFavorites
+from app.models.users import User
 
 
 class ModelFactory:
     @staticmethod
     def get_model(collection_name):
         models = {
-            "users": Users,
+            "users": User,
             "pokemons":Pokemon,
-            "pokemon_favorites": Pokemon_Saved
+            "pokemon_favorites": PokemonFavorites
         }
         if collection_name in models:
             return models[collection_name]()
