@@ -28,6 +28,11 @@ class SuperClass:
         },{
             "$set":data
         })
+
+        datum = self.collection.find_one({
+            "_id":object_id
+        })
+        datum["_id"]= str(datum["_id"])
         return datum
     
     

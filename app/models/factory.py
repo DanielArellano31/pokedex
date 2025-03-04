@@ -13,4 +13,4 @@ class ModelFactory:
         }
         if collection_name in models:
             return models[collection_name]()
-        raise ValueError(f"La coleccion enviada :{collection_name} no existe")
+        raise ValueError(f"La coleccion enviada: {collection_name} no existe")
