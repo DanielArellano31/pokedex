@@ -19,8 +19,8 @@ def get_all():
     return RM.success(data)
 
 #get one
-@bp.route("/", methods=["GET"])
+@bp.route("/<string:pokemon_id>", methods=["GET"])
 @jwt_required()
-def get_pokemon(Pokemon_id):
-    pokemon = FP_model.find_by_id(ObjectId(Pokemon_id))
+def get_pokemon(pokemon_id):
+    pokemon = FP_model.find_by_id(ObjectId(pokemon_id))
     return RM.success(pokemon)

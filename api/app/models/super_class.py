@@ -1,13 +1,15 @@
 from app import mongo
 
 class SuperClass:
-    def init(self,collection):
+    def __init__(self,collection):
         self.collection = mongo.db[collection] 
 
 
    
     def find_all(self):
-        data = self.collection.find()
+        data = list(self.collection.find())
+        for datum in data:
+            datum["_id"] = str(datum["_id"])
         return list(data)
     
 
@@ -15,6 +17,8 @@ class SuperClass:
         datum = self.collection.find_one({
             "_id": object_id
         })
+        if datum:
+            datum["_id"] = str(datum["_id"])
         return datum
     
     def create(self,data):

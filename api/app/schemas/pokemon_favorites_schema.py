@@ -10,10 +10,4 @@ class PokemonFavoriteSchema(Schema):
         }
     )
 
-    user_id = fields.Str(
-     required= True,
-     validate= lambda x:len (x)>0,
-     error_messages={
-         "required": "El id del usuario es requerido"
-     }   
-    )
+   

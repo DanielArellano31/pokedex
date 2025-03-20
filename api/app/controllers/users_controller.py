@@ -6,7 +6,6 @@ from bson import ObjectId
 from app.tools.response_manager import ResponseManager
 from flask_jwt_extended import jwt_required, get_jwt_identity, create_access_token
 from app.tools.encription_manager import EncryptionManager
-from app.models.users import get_by_email_password
 
 RM = ResponseManager()
 bp = Blueprint("users", __name__,url_prefix ="/users")
@@ -15,19 +14,29 @@ user_model = ModelFactory.get_model("users")
 EM = EncryptionManager()
 
 
-@bp.route("/login",methods = ["POST"])
+@bp.route("/login", methods=["POST"])
 def login():
-     data = request.json
-     email = data.get("email",None)
-     password = data.get("password", None)
-     if not email or not password:
-          return RM.error("Es necesario enviar todas las credenciales")
-     user = user_model.get_by_email_password(email,password)
-     if not user:
-          return RM.error("No se encontro un usuario")
-     if not EM.compare_hashes(password, user["password"]):
-         return RM.error("credenciales invalidas")
-     return RM.success({"user": user, "token": create_access_token(user["_id"])})
+    try:
+        data = request.get_json()  
+        print("Data recived:",  data)
+        email = data.get("email", None)
+        password = data.get("password", None)
+
+        if not email or not password:
+            return RM.error("Correo o contraseña vací@") 
+
+        user = user_model.get_by_email(email)
+        print("User found:", user)
+        if not user:
+            return RM.error("No se encontró un usuario")
+    
+        if not EM.compare_hashes(password, user.get("password", "")):  
+            return RM.error("Credenciales inválidas")
+
+        return RM.success({"user": user, "token": create_access_token(user["_id"])})
+    except Exception as err:
+        print(err)
+        return RM.error_server("Se produjo un error")
      
 
 
@@ -69,6 +78,8 @@ def delete():
 def get_user():
     user_id = get_jwt_identity()
     user = user_model.find_by_id(ObjectId(user_id))
+    if not user:
+        return RM.error("No se encontro el usuario")
     return RM.success(user)
      
 

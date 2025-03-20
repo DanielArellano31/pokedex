@@ -19,11 +19,7 @@ def create_app():
     app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours = 1)
     mongo.init_app(app)
     jwt.init_app(app)
-    from app.controllers import (
-        pokemon_controller,
-        pokemon_favorites_controller,
-         users_controller
-         )
+    from app.controllers import pokemon_controller,pokemon_favorites_controller,users_controller
     app.register_blueprint(pokemon_controller.bp)
     app.register_blueprint(pokemon_favorites_controller.bp)
     app.register_blueprint(users_controller.bp)
